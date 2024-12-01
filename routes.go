@@ -1,56 +1,51 @@
 package framework
 
 import (
-	"log"
 	"net/http"
 
-	"github.com/gin-gonic/gin"
+	"github.com/gorilla/mux"
 )
 
-func NewRouter(routes []Route, generalMiddlewares []gin.HandlerFunc) *gin.Engine {
-	router := gin.Default()
+func NewRouter(routes []Route, generalMiddlewares []mux.MiddlewareFunc) *mux.Router {
+	router := mux.NewRouter().StrictSlash(true)
 
 	router.Use(generalMiddlewares...)
 
 	for _, route := range routes {
-		routeGroup := router.Group(route.Pattern)
-
-		if route.Middlewares != nil {
-			routeGroup.Use(route.Middlewares...)
-		}
-
-		switch route.Method {
-		case http.MethodGet:
-			routeGroup.GET("", route.HandleFunc)
-		case http.MethodPost:
-			routeGroup.POST("", route.HandleFunc)
-		case http.MethodPut:
-			routeGroup.PUT("", route.HandleFunc)
-		case http.MethodDelete:
-			routeGroup.DELETE("", route.HandleFunc)
-		case http.MethodPatch:
-			routeGroup.PATCH("", route.HandleFunc)
-		default:
-			log.Printf(HttpMethodNotSupported, route.Method, route.Pattern)
-		}
-
-		addOptionsRoute(routeGroup)
+		setupRoute(router, route)
 	}
 
 	return router
 }
 
-func addOptionsRoute(routeGroup *gin.RouterGroup) {
-	routeGroup.OPTIONS("", GetOptions)
+func setupRoute(router *mux.Router, route Route) {
+
+	subRouter := router.Methods(route.Method).
+		Path(route.Pattern).Subrouter()
+
+	subRouter.Name(route.Name).Handler(route.HandleFunc)
+
+	if route.Middlewares != nil {
+		subRouter.Use(route.Middlewares...)
+	}
+
+	addOptionsRoute(subRouter, route)
 }
 
-func GetOptions(c *gin.Context) {
-	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
-	c.Writer.Header().Set("Access-Control-Allow-Headers", "Authorization, Content-Type")
-	c.Writer.Header().Set("Access-Control-Request-Headers", "Authorization")
-	c.JSON(http.StatusOK, gin.H{})
+func addOptionsRoute(router *mux.Router, route Route) {
+	router.Methods("OPTIONS").
+		Path(route.Pattern).
+		Name(route.Name + "Options").
+		HandlerFunc(GetOptions)
 }
 
-func Healthy(c *gin.Context) {
-	c.String(http.StatusOK, "Healthy")
+func GetOptions(writer http.ResponseWriter, _ *http.Request) {
+	writer.Header().Set("Access-Control-Allow-Credentials", "true")
+	writer.Header().Set("Access-Control-Allow-Headers", "*")
+	writer.Header().Set("Access-Control-Request-Headers", "Authorization")
+	ResponseJSON(writer, http.StatusOK, nil)
+}
+
+func Healthy(writer http.ResponseWriter, _ *http.Request) {
+	writer.Write([]byte("Healthy"))
 }

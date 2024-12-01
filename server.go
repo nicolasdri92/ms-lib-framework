@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/gin-gonic/gin"
+	"github.com/gorilla/mux"
 )
 
 func ServerSetup() {
@@ -17,7 +17,7 @@ func ServerSetup() {
 	CheckConnected()
 }
 
-func ServerListenAndServe(microservice string, routes []Route, generalMiddlewares []gin.HandlerFunc) {
+func ServerListenAndServe(microservice string, routes []Route, generalMiddlewares []mux.MiddlewareFunc) {
 	router := NewRouter(routes, generalMiddlewares)
 
 	port := GetVariable("PORT")
