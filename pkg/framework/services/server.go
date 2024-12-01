@@ -9,7 +9,7 @@ import (
 	"github.com/nicolasdri92/ms-lib-framework/internal/config"
 	"github.com/nicolasdri92/ms-lib-framework/internal/constants"
 	"github.com/nicolasdri92/ms-lib-framework/internal/helpers"
-	"github.com/nicolasdri92/ms-lib-framework/internal/models"
+	"github.com/nicolasdri92/ms-lib-framework/pkg/framework/models"
 )
 
 func ServerSetup() {

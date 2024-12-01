@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/nicolasdri92/ms-lib-framework/internal/constants"
-	"github.com/nicolasdri92/ms-lib-framework/internal/models"
+	"github.com/nicolasdri92/ms-lib-framework/pkg/framework/models"
 )
 
 func NewRouter(routes []models.Route, generalMiddlewares []gin.HandlerFunc) *gin.Engine {
