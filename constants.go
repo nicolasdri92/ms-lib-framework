@@ -1,4 +1,4 @@
-package constants
+package framework
 
 // ERRORS
 const ErrorDotenvNotFound string = "archivo .env no encontrado"

@@ -1,18 +1,16 @@
-package helpers
+package framework
 
 import (
 	"fmt"
 	"log"
 	"net/http"
-
-	"github.com/nicolasdri92/ms-lib-framework/internal/constants"
 )
 
 func CheckConnected() {
 	if connected() {
-		fmt.Println(constants.ConnectionSuccessful)
+		fmt.Println(ConnectionSuccessful)
 	} else {
-		log.Fatal(constants.ConnectionFailed)
+		log.Fatal(ConnectionFailed)
 	}
 }
 

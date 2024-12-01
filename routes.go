@@ -1,15 +1,13 @@
-package api
+package framework
 
 import (
 	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/nicolasdri92/ms-lib-framework/internal/constants"
-	"github.com/nicolasdri92/ms-lib-framework/pkg/framework/models"
 )
 
-func NewRouter(routes []models.Route, generalMiddlewares []gin.HandlerFunc) *gin.Engine {
+func NewRouter(routes []Route, generalMiddlewares []gin.HandlerFunc) *gin.Engine {
 	router := gin.Default()
 
 	router.Use(generalMiddlewares...)
@@ -33,7 +31,7 @@ func NewRouter(routes []models.Route, generalMiddlewares []gin.HandlerFunc) *gin
 		case http.MethodPatch:
 			routeGroup.PATCH("", route.HandleFunc)
 		default:
-			log.Printf(constants.HttpMethodNotSupported, route.Method, route.Pattern)
+			log.Printf(HttpMethodNotSupported, route.Method, route.Pattern)
 		}
 
 		addOptionsRoute(routeGroup)

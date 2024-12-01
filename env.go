@@ -1,18 +1,17 @@
-package config
+package framework
 
 import (
 	"errors"
 	"os"
 
 	"github.com/joho/godotenv"
-	"github.com/nicolasdri92/ms-lib-framework/internal/constants"
 )
 
 func LoadEnv() error {
 	err := godotenv.Load(".env")
 
 	if err != nil {
-		return errors.New(constants.ErrorDotenvNotFound)
+		return errors.New(ErrorDotenvNotFound)
 	}
 
 	return nil
