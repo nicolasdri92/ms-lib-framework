@@ -5,11 +5,11 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/nexivia/ms-lib-framework/api"
-	"github.com/nexivia/ms-lib-framework/internal/config"
-	"github.com/nexivia/ms-lib-framework/internal/constants"
-	"github.com/nexivia/ms-lib-framework/internal/helpers"
-	"github.com/nexivia/ms-lib-framework/internal/models"
+	"github.com/nicolasdri92/ms-lib-framework/api"
+	"github.com/nicolasdri92/ms-lib-framework/internal/config"
+	"github.com/nicolasdri92/ms-lib-framework/internal/constants"
+	"github.com/nicolasdri92/ms-lib-framework/internal/helpers"
+	"github.com/nicolasdri92/ms-lib-framework/internal/models"
 )
 
 func ServerSetup() {

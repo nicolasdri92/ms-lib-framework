@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/nexivia/ms-lib-framework/internal/constants"
+	"github.com/nicolasdri92/ms-lib-framework/internal/constants"
 )
 
 func CheckConnected() {

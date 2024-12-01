@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/nexivia/ms-lib-framework/internal/constants"
-	"github.com/nexivia/ms-lib-framework/internal/models"
+	"github.com/nicolasdri92/ms-lib-framework/internal/constants"
+	"github.com/nicolasdri92/ms-lib-framework/internal/models"
 )
 
 func NewRouter(routes []models.Route, generalMiddlewares []gin.HandlerFunc) *gin.Engine {

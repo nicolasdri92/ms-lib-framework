@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
-	"github.com/nexivia/ms-lib-framework/internal/constants"
+	"github.com/nicolasdri92/ms-lib-framework/internal/constants"
 )
 
 func LoadEnv() error {

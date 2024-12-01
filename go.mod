@@ -1,4 +1,4 @@
-module github.com/nexivia/ms-lib-framework
+module github.com/nicolasdri92/ms-lib-framework
 
 go 1.22.1
 
