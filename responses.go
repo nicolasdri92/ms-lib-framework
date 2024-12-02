@@ -22,7 +22,17 @@ func ResponseJSON(w http.ResponseWriter, status int, results interface{}) {
 }
 
 func ResponseError(w http.ResponseWriter, code string, status int, types string, trace string, title string, message string) {
-	var timestamp = time.Now().Format("2006-01-02T00:00:00")
+	err := Error{
+		Codigo:    strconv.Itoa(status),
+		Error:     message,
+		Timestamp: time.Now().Format("2006-01-02T00:00:00"),
+		Code:      code,
+		Status:    status,
+		Type:      types,
+		Trace:     trace,
+		Title:     title,
+		Message:   message,
+	}
 
-	ResponseJSON(w, status, Error{Codigo: strconv.Itoa(status), Error: message, Timestamp: timestamp, Code: code, Status: status, Type: types, Trace: trace, Title: title, Message: message})
+	ResponseJSON(w, status, err)
 }

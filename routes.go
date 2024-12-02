@@ -7,7 +7,9 @@ import (
 )
 
 func NewRouter(routes []Route, generalMiddlewares []mux.MiddlewareFunc) *mux.Router {
-	router := mux.NewRouter().StrictSlash(true)
+	router := mux.
+		NewRouter().
+		StrictSlash(true)
 
 	router.Use(generalMiddlewares...)
 
@@ -19,11 +21,15 @@ func NewRouter(routes []Route, generalMiddlewares []mux.MiddlewareFunc) *mux.Rou
 }
 
 func setupRoute(router *mux.Router, route Route) {
+	subRouter := router.
+		PathPrefix("/api/v1").
+		Methods(route.Method).
+		Path(route.Pattern).
+		Subrouter()
 
-	subRouter := router.Methods(route.Method).
-		Path(route.Pattern).Subrouter()
-
-	subRouter.Name(route.Name).Handler(route.HandleFunc)
+	subRouter.
+		Name(route.Name).
+		Handler(route.HandleFunc)
 
 	if route.Middlewares != nil {
 		subRouter.Use(route.Middlewares...)
@@ -43,6 +49,7 @@ func GetOptions(writer http.ResponseWriter, _ *http.Request) {
 	writer.Header().Set("Access-Control-Allow-Credentials", "true")
 	writer.Header().Set("Access-Control-Allow-Headers", "*")
 	writer.Header().Set("Access-Control-Request-Headers", "Authorization")
+
 	ResponseJSON(writer, http.StatusOK, nil)
 }
 

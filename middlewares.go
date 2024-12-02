@@ -3,7 +3,6 @@ package framework
 import (
 	"fmt"
 	"net/http"
-	"os"
 )
 
 func RecoveryMiddleware(next http.Handler) http.Handler {
@@ -20,16 +19,11 @@ func RecoveryMiddleware(next http.Handler) http.Handler {
 }
 
 func CORSMiddleware(next http.Handler) http.Handler {
-
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if os.Getenv("ACCESS_CONTROL_ALLOW_ORIGIN") != "" {
-			w.Header().Set("Access-Control-Allow-Origin", os.Getenv("ACCESS_CONTROL_ALLOW_ORIGIN"))
-		} else {
-			w.Header().Set("Access-Control-Allow-Origin", "*")
-		}
 
-		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, PATCH, DELETE")
 		w.Header().Set("Access-Control-Allow-Headers", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, PATCH, DELETE")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 
 		next.ServeHTTP(w, r)
 	})
