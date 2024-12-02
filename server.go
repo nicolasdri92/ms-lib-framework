@@ -17,12 +17,12 @@ func ServerSetup() {
 	CheckConnected()
 }
 
-func ServerListenAndServe(microservice string, routes []Route, generalMiddlewares []mux.MiddlewareFunc) {
+func ServerListenAndServe(routes []Route, generalMiddlewares []mux.MiddlewareFunc) {
 	router := NewRouter(routes, generalMiddlewares)
 
 	port := GetVariable("PORT")
 
-	server := http.ListenAndServe(":"+port, router)
+	server := http.ListenAndServe(port, router)
 
 	log.Fatal(server)
 }
