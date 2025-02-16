@@ -3,36 +3,21 @@ package framework
 import (
 	"encoding/json"
 	"net/http"
-	"strconv"
 	"time"
+
+	"github.com/nicolasdri92/ms-lib-framework/models"
 )
 
-func ResponseJSON(w http.ResponseWriter, status int, results interface{}) {
-	response, err := json.Marshal(results)
-
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(err.Error()))
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(status)
-	w.Write([]byte(response))
+func ResponseJSON(writer http.ResponseWriter, results interface{}) {
+	writer.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(writer).Encode(results)
 }
 
-func ResponseError(w http.ResponseWriter, code string, status int, types string, trace string, title string, message string) {
-	err := Error{
-		Codigo:    strconv.Itoa(status),
-		Error:     message,
-		Timestamp: time.Now().Format("2006-01-02T00:00:00"),
-		Code:      code,
-		Status:    status,
-		Type:      types,
-		Trace:     trace,
-		Title:     title,
-		Message:   message,
-	}
-
-	ResponseJSON(w, status, err)
+func ResponseError(writer http.ResponseWriter, statusCode int, title string, message string) {
+	ResponseJSON(writer, models.Error{
+		Date:       time.Now().Format(time.RFC3339),
+		StatusCode: statusCode,
+		Title:      title,
+		Message:    message,
+	})
 }

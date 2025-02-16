@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/nicolasdri92/ms-lib-framework/models"
 )
 
 func ServerSetup() {
@@ -17,12 +18,10 @@ func ServerSetup() {
 	CheckConnected()
 }
 
-func ServerListenAndServe(routes []Route, generalMiddlewares []mux.MiddlewareFunc) {
-	router := NewRouter(routes, generalMiddlewares)
+func ListenAndServe(routes []models.Route, middlewares []mux.MiddlewareFunc) {
+	addr := GetVariable("PORT")
+	handler := NewRouter(routes, middlewares)
+	err := http.ListenAndServe(addr, handler)
 
-	port := GetVariable("PORT")
-
-	server := http.ListenAndServe(port, router)
-
-	log.Fatal(server)
+	log.Fatal(err)
 }

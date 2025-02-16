@@ -4,14 +4,15 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/nicolasdri92/ms-lib-framework/models"
 )
 
-func NewRouter(routes []Route, generalMiddlewares []mux.MiddlewareFunc) *mux.Router {
+func NewRouter(routes []models.Route, middlewares []mux.MiddlewareFunc) *mux.Router {
 	router := mux.
 		NewRouter().
 		StrictSlash(true)
 
-	router.Use(generalMiddlewares...)
+	router.Use(middlewares...)
 
 	for _, route := range routes {
 		setupRoute(router, route)
@@ -20,7 +21,7 @@ func NewRouter(routes []Route, generalMiddlewares []mux.MiddlewareFunc) *mux.Rou
 	return router
 }
 
-func setupRoute(router *mux.Router, route Route) {
+func setupRoute(router *mux.Router, route models.Route) {
 	subRouter := router.
 		PathPrefix("/api/v1").
 		Methods(route.Method).
@@ -38,21 +39,21 @@ func setupRoute(router *mux.Router, route Route) {
 	addOptionsRoute(subRouter, route)
 }
 
-func addOptionsRoute(router *mux.Router, route Route) {
-	router.Methods("OPTIONS").
+func addOptionsRoute(router *mux.Router, route models.Route) {
+	router.Methods(http.MethodOptions).
 		Path(route.Pattern).
-		Name(route.Name + "Options").
-		HandlerFunc(GetOptions)
+		Name(route.Name + http.MethodOptions).
+		HandlerFunc(getOptions)
 }
 
-func GetOptions(writer http.ResponseWriter, _ *http.Request) {
+func getOptions(writer http.ResponseWriter, _ *http.Request) {
 	writer.Header().Set("Access-Control-Allow-Credentials", "true")
 	writer.Header().Set("Access-Control-Allow-Headers", "*")
 	writer.Header().Set("Access-Control-Request-Headers", "Authorization")
 
-	ResponseJSON(writer, http.StatusOK, nil)
+	ResponseJSON(writer, nil)
 }
 
-func Healthy(writer http.ResponseWriter, _ *http.Request) {
-	writer.Write([]byte("Healthy"))
-}
+// func Healthy(writer http.ResponseWriter, _ *http.Request) {
+// 	writer.Write([]byte("Healthy"))
+// }
