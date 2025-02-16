@@ -54,6 +54,6 @@ func getOptions(writer http.ResponseWriter, _ *http.Request) {
 	ResponseJSON(writer, nil)
 }
 
-// func Healthy(writer http.ResponseWriter, _ *http.Request) {
-// 	writer.Write([]byte("Healthy"))
-// }
+func Healthy(writer http.ResponseWriter, _ *http.Request) {
+	writer.Write([]byte("Healthy"))
+}
