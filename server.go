@@ -21,7 +21,7 @@ func ServerSetup() {
 func ListenAndServe(routes []models.Route, middlewares []mux.MiddlewareFunc) {
 	addr := GetVariable("PORT")
 	handler := NewRouter(routes, middlewares)
-	err := http.ListenAndServe(addr, handler)
+	err := http.ListenAndServe(":"+addr, handler)
 
 	log.Fatal(err)
 }
